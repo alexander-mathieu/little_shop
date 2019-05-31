@@ -51,7 +51,7 @@ RSpec.describe 'merchant dashboard' do
         visit dashboard_path
 
         expect(page).to have_css(".to-do-list")
-        end
+      end
 
       scenario 'as an admin user' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
