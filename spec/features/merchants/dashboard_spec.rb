@@ -104,6 +104,16 @@ RSpec.describe 'merchant dashboard' do
       expect(page).to_not have_css("#order-#{@o4.id}")
     end
 
+    it 'shows items without pictures within to-do list' do
+      within '.to-do-list' do
+        within '#items-without-pictures' do
+          expect(page).to have_content("Items with pictures are much more likely to be viewed!  Add photos for these items to increase sales:")
+          expect(page).to have_content(@i1.name)
+          expect(page).to have_content(@i2.name)
+        end
+      end
+    end
+
     describe 'shows a link to merchant items' do
       scenario 'as a merchant' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
