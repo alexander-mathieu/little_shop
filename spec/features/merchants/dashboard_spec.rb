@@ -122,7 +122,7 @@ RSpec.describe 'merchant dashboard' do
       within '.to-do-list' do
         save_and_open_page
         within '#unfulfilled-item-revenue' do
-          expect(page).to have_content("You have 2 unfulfilled orders worth $14.00")
+          expect(page).to have_content("You have 2 unfulfilled orders worth $14.00!")
         end
       end
     end

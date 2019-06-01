@@ -24,6 +24,11 @@
       <% end %>
     </section>
     <% end %>
+    <% if @pending_orders %>
+    <section id="unfulfilled-item-revenue">
+      <p>You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
+    </section>
+    <% end %>
   </div>
 <% end %>
 
