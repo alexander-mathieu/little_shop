@@ -17,6 +17,14 @@ class User < ApplicationRecord
     items.where(active: true).order(:name)
   end
 
+  def items_without_pictures
+    default_image_url = "%https://picsum.photos/%"
+
+    items.where(active: true)
+    .where('items.image LIKE ?', default_image_url)
+    .order(:name)
+  end
+
   def top_items_sold_by_quantity(limit)
     items.joins(order_items: :order)
          .where(order_items: {fulfilled: true}, orders: {status: :shipped})

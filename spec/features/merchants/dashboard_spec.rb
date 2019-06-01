@@ -104,9 +104,8 @@ RSpec.describe 'merchant dashboard' do
       expect(page).to_not have_css("#order-#{@o4.id}")
     end
 
-    it 'shows links for items without pictures within to-do list' do
+    it 'shows links to edit pages for items without pictures within to-do list' do
       within '.to-do-list' do
-
         within '#items-without-pictures' do
           expect(page).to have_content("Add photos for these items to increase sales:")
           expect(page).to have_link(@i1.name)
@@ -114,7 +113,15 @@ RSpec.describe 'merchant dashboard' do
 
           click_link "#{@i1.name}"
 
-          expect(current_path).to eq(item_path(@i1))
+          expect(current_path).to eq(edit_dashboard_item_path(@i1))
+        end
+      end
+    end
+
+    it 'shows a statistic about unfulfilled items and revenue impact' do
+      within '.to-do-list' do
+        within '#unfulfilled-item-revenue' do
+          expect(page).to have_content("You have 2 unfulfilled orders worth $14.00!")
         end
       end
     end

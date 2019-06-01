@@ -46,10 +46,6 @@ RSpec.describe Item, type: :model do
       expect(actual).to eq([@items[4], @items[5], @items[2]])
       expect(actual[0].total_ordered).to eq(1)
     end
-
-    it '.items_without_pictures' do
-      expect(Item.items_without_pictures).to eq([@items[0], @items[1], @items[2], @items[3], @items[4], @items[5]])
-    end
   end
 
   describe 'instance methods' do

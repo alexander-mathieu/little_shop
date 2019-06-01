@@ -20,8 +20,13 @@
     <section id="items-without-pictures">
       <p>Add photos for these items to increase sales:</p>
       <% @items_without_pictures.each do |item| %>
-        <p><%= link_to item.name, item_path(item) %></p>
+        <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
       <% end %>
+    </section>
+    <% end %>
+    <% if @pending_orders %>
+    <section id="unfulfilled-item-revenue">
+      <p>You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
     </section>
     <% end %>
   </div>

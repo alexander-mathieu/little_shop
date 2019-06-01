@@ -16,12 +16,13 @@ class Order < ApplicationRecord
     oi.sum
   end
 
-  def self.pending_orders_for_merchant(merchant_id)
-    self.joins(:items)
-        .where(status: :pending)
-        .where(items: {merchant_id: merchant_id})
-        .distinct
+  def self.revenue_for_merchant(merchant_id)
+    select('items.id, order_items.quantity, order_items.price')
+    .joins(:items)
+    .where(items: {merchant_id: merchant_id})
+    .sum('order_items.quantity * order_items.price')
   end
+
 
   def total_quantity_for_merchant(merchant_id)
     items.joins(:order_items)
@@ -39,9 +40,17 @@ class Order < ApplicationRecord
          .sum('order_items.quantity * order_items.price')
   end
 
+
   def order_items_for_merchant(merchant_id)
     order_items.joins(:item)
                .where(items: {merchant_id: merchant_id})
+  end
+
+  def self.pending_orders_for_merchant(merchant_id)
+    self.joins(:items)
+    .where(status: :pending)
+    .where(items: {merchant_id: merchant_id})
+    .distinct
   end
 
   def self.orders_by_status(status)

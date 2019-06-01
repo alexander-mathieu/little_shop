@@ -112,6 +112,10 @@ RSpec.describe User, type: :model do
       @oi7.fulfill
     end
 
+    it '.items_without_pictures' do
+      expect(@m1.items_without_pictures).to eq([@i1, @i2, @i3, @i4, @i5, @i6, @i7, @i8])
+    end
+
     it '.active_items' do
       expect(@m2.active_items).to eq([@i10])
       expect(@m1.active_items).to eq([@i1, @i2, @i3, @i4, @i5, @i6, @i7, @i8])
