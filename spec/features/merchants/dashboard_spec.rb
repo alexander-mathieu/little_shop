@@ -104,7 +104,7 @@ RSpec.describe 'merchant dashboard' do
       expect(page).to_not have_css("#order-#{@o4.id}")
     end
 
-    it 'shows links for items without pictures within to-do list' do
+    it 'shows links to edit pages for items without pictures within to-do list' do
       within '.to-do-list' do
 
         within '#items-without-pictures' do
@@ -114,7 +114,7 @@ RSpec.describe 'merchant dashboard' do
 
           click_link "#{@i1.name}"
 
-          expect(current_path).to eq(item_path(@i1))
+          expect(current_path).to eq(edit_dashboard_item_path(@i1))
         end
       end
     end
