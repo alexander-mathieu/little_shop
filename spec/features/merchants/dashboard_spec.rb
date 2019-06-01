@@ -4,10 +4,13 @@ RSpec.describe 'merchant dashboard' do
   before :each do
     @merchant = create(:merchant)
     @admin = create(:admin)
+
     @i1, @i2 = create_list(:item, 2, user: @merchant)
     @o1, @o2 = create_list(:order, 2)
+
     @o3 = create(:shipped_order)
     @o4 = create(:cancelled_order)
+
     create(:order_item, order: @o1, item: @i1, quantity: 1, price: 2)
     create(:order_item, order: @o1, item: @i2, quantity: 2, price: 2)
     create(:order_item, order: @o2, item: @i2, quantity: 4, price: 2)
@@ -19,13 +22,18 @@ RSpec.describe 'merchant dashboard' do
     describe 'shows merchant information' do
       scenario 'as a merchant' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
         visit dashboard_path
+
         expect(page).to_not have_button("Downgrade to User")
       end
+
       scenario 'as an admin' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+
         visit admin_merchant_path(@merchant)
       end
+
       after :each do
         expect(page).to have_content(@merchant.name)
         expect(page).to have_content("Email: #{@merchant.email}")
@@ -33,6 +41,24 @@ RSpec.describe 'merchant dashboard' do
         expect(page).to have_content("City: #{@merchant.city}")
         expect(page).to have_content("State: #{@merchant.state}")
         expect(page).to have_content("Zip: #{@merchant.zip}")
+      end
+    end
+
+    describe 'shows to-do list' do
+      scenario 'as a merchant' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
+        visit dashboard_path
+
+        expect(page).to have_css(".to-do-list")
+      end
+
+      scenario 'as an admin user' do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+
+        visit admin_merchant_path(@merchant)
+
+        expect(page).to_not have_css(".to-do-list")
       end
     end
   end
@@ -43,6 +69,7 @@ RSpec.describe 'merchant dashboard' do
 
       visit dashboard_path
     end
+
     it 'shows merchant information' do
       expect(page).to have_content(@merchant.name)
       expect(page).to have_content("Email: #{@merchant.email}")
@@ -63,6 +90,7 @@ RSpec.describe 'merchant dashboard' do
         expect(page).to have_content(@o1.total_quantity_for_merchant(@merchant.id))
         expect(page).to have_content(@o1.total_price_for_merchant(@merchant.id))
       end
+
       within("#order-#{@o2.id}") do
         expect(page).to have_link(@o2.id)
         expect(page).to have_content(@o2.created_at)
@@ -76,18 +104,41 @@ RSpec.describe 'merchant dashboard' do
       expect(page).to_not have_css("#order-#{@o4.id}")
     end
 
+    it 'shows links for items without pictures within to-do list' do
+      within '.to-do-list' do
+
+        within '#items-without-pictures' do
+          expect(page).to have_content("Add photos for these items to increase sales:")
+          expect(page).to have_link(@i1.name)
+          expect(page).to have_link(@i2.name)
+
+          click_link "#{@i1.name}"
+
+          expect(current_path).to eq(item_path(@i1))
+        end
+      end
+    end
+
     describe 'shows a link to merchant items' do
       scenario 'as a merchant' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@merchant)
+
         visit dashboard_path
+
         click_link('Items for Sale')
+
         expect(current_path).to eq(dashboard_items_path)
       end
+
       scenario 'as an admin' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@admin)
+
         visit admin_merchant_path(@merchant)
+
         expect(page.status_code).to eq(200)
+
         click_link('Items for Sale')
+
         expect(current_path).to eq(admin_merchant_items_path(@merchant))
       end
     end
