@@ -5,8 +5,8 @@ RSpec.describe 'merchant dashboard' do
     @merchant = create(:merchant)
     @admin = create(:admin)
 
-    @i1, @i2 = create_list(:item, 2, user: @merchant)
-    @o1, @o2 = create_list(:order, 2)
+    @i1, @i2, @i3, @i4 = create_list(:item, 4, user: @merchant)
+    @o1, @o2, @o5, @o6 = create_list(:order, 4)
 
     @o3 = create(:shipped_order)
     @o4 = create(:cancelled_order)
@@ -16,6 +16,10 @@ RSpec.describe 'merchant dashboard' do
     create(:order_item, order: @o2, item: @i2, quantity: 4, price: 2)
     create(:order_item, order: @o3, item: @i1, quantity: 4, price: 2)
     create(:order_item, order: @o4, item: @i2, quantity: 5, price: 2)
+    create(:order_item, order: @o5, item: @i3, quantity: 8, price: 2)
+    create(:order_item, order: @o5, item: @i4, quantity: 10, price: 2)
+    create(:order_item, order: @o6, item: @i3, quantity: 8, price: 2)
+    create(:order_item, order: @o6, item: @i4, quantity: 12, price: 2)
   end
 
   describe 'merchant user visits their profile' do
@@ -99,6 +103,24 @@ RSpec.describe 'merchant dashboard' do
       end
     end
 
+    it 'shows a warning beside pending orders current inventory cannot cover' do
+      within("#order-#{@o6.id}") do
+        expect(page).to have_content("Current inventory is too low to fulfill!")
+      end
+
+      within("#order-#{@o1.id}") do
+        expect(page).to_not have_content("Current inventory is too low to fulfill!")
+      end
+
+      within("#order-#{@o2.id}") do
+        expect(page).to_not have_content("Current inventory is too low to fulfill!")
+      end
+
+      within("#order-#{@o5.id}") do
+        expect(page).to_not have_content("Current inventory is too low to fulfill!")
+      end
+    end
+
     it 'does not show non-pending orders' do
       expect(page).to_not have_css("#order-#{@o3.id}")
       expect(page).to_not have_css("#order-#{@o4.id}")
@@ -121,7 +143,7 @@ RSpec.describe 'merchant dashboard' do
     it 'shows a statistic about unfulfilled items and revenue impact' do
       within '.to-do-list' do
         within '#unfulfilled-item-revenue' do
-          expect(page).to have_content("You have 2 unfulfilled orders worth $14.00!")
+          expect(page).to have_content("You have 4 unfulfilled orders worth $74.00!")
         end
       end
     end
