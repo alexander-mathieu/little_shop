@@ -23,6 +23,9 @@ class Order < ApplicationRecord
     .sum('order_items.quantity * order_items.price')
   end
 
+  def insufficient_inventory?
+    order_items.any? {|order_item| order_item.inventory_unavailable}
+  end
 
   def total_quantity_for_merchant(merchant_id)
     items.joins(:order_items)
