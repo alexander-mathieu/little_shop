@@ -48,8 +48,8 @@ RSpec.describe OrderItem, type: :model do
       expect(item.inventory).to eq(0)
     end
 
-    it 'inventory_available' do
-      item = create(:item, inventory:2)
+    it '.inventory_available' do
+      item = create(:item, inventory: 2)
       oi1 = create(:order_item, quantity: 1, item: item)
       oi2 = create(:order_item, quantity: 2, item: item)
       oi3 = create(:order_item, quantity: 3, item: item)
@@ -57,6 +57,17 @@ RSpec.describe OrderItem, type: :model do
       expect(oi1.inventory_available).to eq(true)
       expect(oi2.inventory_available).to eq(true)
       expect(oi3.inventory_available).to eq(false)
+    end
+
+    it '.inventory_unvailable' do
+      item = create(:item, inventory: 2)
+      oi1 = create(:order_item, quantity: 1, item: item)
+      oi2 = create(:order_item, quantity: 2, item: item)
+      oi3 = create(:order_item, quantity: 3, item: item)
+
+      expect(oi1.inventory_unavailable).to eq(false)
+      expect(oi2.inventory_unavailable).to eq(false)
+      expect(oi3.inventory_unavailable).to eq(true)
     end
   end
 end
