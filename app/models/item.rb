@@ -31,12 +31,6 @@ class Item < ApplicationRecord
     .limit(limit)
   end
 
-  def self.items_without_pictures
-    default_image_url = "%https://picsum.photos/%"
-
-    where("items.image LIKE ?", default_image_url).order(:name)
-  end
-
   def convert_datetime_to_seconds(datetime)
     days_and_hours = datetime.split(":").first
     days = days_and_hours.split.first.to_i
