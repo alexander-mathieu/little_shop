@@ -24,11 +24,17 @@ class Item < ApplicationRecord
   end
 
   def self.item_popularity(limit, order)
-    Item.joins(:order_items)
-      .select('items.*, sum(quantity) as total_ordered')
-      .group(:id)
-      .order("total_ordered #{order}")
-      .limit(limit)
+     joins(:order_items)
+    .select('items.*, sum(quantity) as total_ordered')
+    .group(:id)
+    .order("total_ordered #{order}")
+    .limit(limit)
+  end
+
+  def self.items_without_pictures
+    default_image_url = "%https://picsum.photos/%"
+
+    where("items.image LIKE ?", default_image_url).order(:name)
   end
 
   def convert_datetime_to_seconds(datetime)
