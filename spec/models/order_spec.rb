@@ -80,21 +80,29 @@ RSpec.describe Order, type: :model do
       expect(Order.pending_orders_for_merchant(@merchant.id)).to eq([@o7, @o8])
     end
 
+    it ".revenue_for_merchant" do
+      expect(Order.revenue_for_merchant(@merchant.id)).to eq(492.00)
+    end
+
     it '.orders_by_status(status)' do
       expect(Order.orders_by_status(:pending)).to eq([@o7, @o8])
       expect(Order.orders_by_status(:packaged)).to eq([@packaged_orders[0], @packaged_orders[1], @packaged_orders[2]])
       expect(Order.orders_by_status(:shipped)).to eq([@o1, @o2, @o3, @o4, @o5, @o6])
       expect(Order.orders_by_status(:cancelled)).to eq([@cancelled_orders[0], @cancelled_orders[1]])
     end
+
     it '.pending_orders' do
       expect(Order.pending_orders).to eq([@o7, @o8])
     end
+
     it '.packaged_orders' do
       expect(Order.packaged_orders).to eq([@packaged_orders[0], @packaged_orders[1], @packaged_orders[2]])
     end
+
     it '.shipped_orders' do
       expect(Order.shipped_orders).to eq([@o1, @o2, @o3, @o4, @o5, @o6])
     end
+
     it '.cancelled_orders' do
       expect(Order.cancelled_orders).to eq([@cancelled_orders[0], @cancelled_orders[1]])
     end
