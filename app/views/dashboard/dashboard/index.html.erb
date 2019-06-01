@@ -24,7 +24,7 @@
       <% end %>
     </section>
     <% end %>
-    <% if @pending_orders %>
+    <% unless @pending_orders.empty? %>
     <section id="unfulfilled-item-revenue">
       <p>You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
     </section>
@@ -107,6 +107,7 @@
         <th>Created Date</th>
         <th>Quantity</th>
         <th>Price</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody>
@@ -120,6 +121,11 @@
           <td><%= order.created_at %></td>
           <td><%= order.total_quantity_for_merchant(@merchant.id) %></td>
           <td><%= order.total_price_for_merchant(@merchant.id) %></td>
+          <td style="color:red;">
+            <% if order.insufficient_inventory? %>
+              Insufficient inventory to fulfill!
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

@@ -104,20 +104,21 @@ RSpec.describe 'merchant dashboard' do
     end
 
     it 'shows a warning beside pending orders current inventory cannot cover' do
+      save_and_open_page
       within("#order-#{@o6.id}") do
-        expect(page).to have_content("Current inventory is too low to fulfill!")
+        expect(page).to have_content("Insufficient inventory to fulfill!")
       end
 
       within("#order-#{@o1.id}") do
-        expect(page).to_not have_content("Current inventory is too low to fulfill!")
+        expect(page).to_not have_content("Insufficient inventory to fulfill!")
       end
 
       within("#order-#{@o2.id}") do
-        expect(page).to_not have_content("Current inventory is too low to fulfill!")
+        expect(page).to_not have_content("Insufficient inventory to fulfill!")
       end
 
       within("#order-#{@o5.id}") do
-        expect(page).to_not have_content("Current inventory is too low to fulfill!")
+        expect(page).to_not have_content("Insufficient inventory to fulfill!")
       end
     end
 
