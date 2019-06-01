@@ -104,7 +104,6 @@ RSpec.describe 'merchant dashboard' do
     end
 
     it 'shows a warning beside pending orders current inventory cannot cover' do
-      save_and_open_page
       within("#order-#{@o6.id}") do
         expect(page).to have_content("Insufficient inventory to fulfill!")
       end
@@ -131,12 +130,27 @@ RSpec.describe 'merchant dashboard' do
       within '.to-do-list' do
         within '#items-without-pictures' do
           expect(page).to have_content("Add photos for these items to increase sales:")
+
           expect(page).to have_link(@i1.name)
           expect(page).to have_link(@i2.name)
 
           click_link "#{@i1.name}"
 
           expect(current_path).to eq(edit_dashboard_item_path(@i1))
+        end
+      end
+    end
+
+    it 'shows items that have insufficient inventory to fulfill all orders' do
+      within '.to-do-list' do
+        within '#items-with-insufficient-inventory' do
+          expect(page).to have_content("These items have insufficient inventory need to be restocked:")
+
+          expect(page).to have_link(@i3.name)
+          expect(page).to have_link(@i4.name)
+
+          expect(page).to_not have_link(@i1.name)
+          expect(page).to_not have_link(@i2.name)
         end
       end
     end
