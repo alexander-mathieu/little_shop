@@ -120,7 +120,6 @@ RSpec.describe 'merchant dashboard' do
 
     it 'shows a statistic about unfulfilled items and revenue impact' do
       within '.to-do-list' do
-        save_and_open_page
         within '#unfulfilled-item-revenue' do
           expect(page).to have_content("You have 2 unfulfilled orders worth $14.00!")
         end
