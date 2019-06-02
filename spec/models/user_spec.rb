@@ -76,6 +76,7 @@ RSpec.describe User, type: :model do
       u6 = create(:user, state: "IA", city: "Des Moines")
 
       @m1 = create(:merchant)
+
       @i1 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i2 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i3 = create(:item, merchant_id: @m1.id, inventory: 20)
@@ -85,8 +86,11 @@ RSpec.describe User, type: :model do
       @i7 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i8 = create(:item, merchant_id: @m1.id, inventory: 20)
       @i9 = create(:inactive_item, merchant_id: @m1.id)
+      @i11 = create(:item, merchant_id: @m1.id, inventory: 3)
+      @i12 = create(:item, merchant_id: @m1.id, inventory: 1)
 
       @m2 = create(:merchant)
+
       @i10 = create(:item, merchant_id: @m2.id, inventory: 20)
 
       o1 = create(:shipped_order, user: @u1)
@@ -96,6 +100,9 @@ RSpec.describe User, type: :model do
       o5 = create(:shipped_order, user: @u1)
       o6 = create(:cancelled_order, user: u5)
       o7 = create(:order, user: u6)
+      o8 = create(:order, user: u6)
+      o9 = create(:order, user: u6)
+
       @oi1 = create(:order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
       @oi2 = create(:order_item, item: @i2, order: o2, quantity: 8, created_at: 7.days.ago)
       @oi3 = create(:order_item, item: @i2, order: o3, quantity: 6, created_at: 7.days.ago)
@@ -103,6 +110,10 @@ RSpec.describe User, type: :model do
       @oi5 = create(:order_item, item: @i4, order: o4, quantity: 3, created_at: 4.days.ago)
       @oi6 = create(:order_item, item: @i5, order: o5, quantity: 1, created_at: 5.days.ago)
       @oi7 = create(:order_item, item: @i6, order: o6, quantity: 2, created_at: 3.days.ago)
+      @oi8 = create(:order_item, item: @i11, order: o8, quantity: 2, created_at: 3.days.ago)
+      @oi9 = create(:order_item, item: @i11, order: o9, quantity: 2, created_at: 3.days.ago)
+      @oi10 = create(:order_item, item: @i12, order: o9, quantity: 2, created_at: 3.days.ago)
+
       @oi1.fulfill
       @oi2.fulfill
       @oi3.fulfill
@@ -112,13 +123,17 @@ RSpec.describe User, type: :model do
       @oi7.fulfill
     end
 
+    it ".insufficient_items" do
+      expect(@m1.insufficient_items). to eq([@i12, @i11])
+    end
+
     it '.items_without_pictures' do
-      expect(@m1.items_without_pictures).to eq([@i1, @i2, @i3, @i4, @i5, @i6, @i7, @i8])
+      expect(@m1.items_without_pictures).to eq([@i1, @i12, @i2, @i3, @i4, @i5, @i6, @i7, @i8, @i11])
     end
 
     it '.active_items' do
       expect(@m2.active_items).to eq([@i10])
-      expect(@m1.active_items).to eq([@i1, @i2, @i3, @i4, @i5, @i6, @i7, @i8])
+      expect(@m1.active_items).to eq([@i1, @i12, @i2, @i3, @i4, @i5, @i6, @i7, @i8, @i11])
     end
 
     it '.top_items_sold_by_quantity' do
@@ -140,11 +155,11 @@ RSpec.describe User, type: :model do
     end
 
     it '.percent_of_items_sold' do
-      expect(@m1.percent_of_items_sold.round(2)).to eq(17.39)
+      expect(@m1.percent_of_items_sold.round(2)).to eq(16.9)
     end
 
     it '.total_inventory_remaining' do
-      expect(@m1.total_inventory_remaining).to eq(138)
+      expect(@m1.total_inventory_remaining).to eq(142)
     end
 
     it '.top_states_by_items_shipped' do

@@ -19,16 +19,20 @@ RSpec.describe Order, type: :model do
       yesterday = 1.day.ago
 
       @order = create(:order, user: user, created_at: yesterday)
+
       @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 1, created_at: yesterday, updated_at: yesterday)
       @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 1, created_at: yesterday, updated_at: 2.hours.ago)
 
       @merchant = create(:merchant)
+
       @i1, @i2 = create_list(:item, 2, user: @merchant)
+
       @o1, @o2 = create_list(:order, 2)
       @o3 = create(:packaged_order)
       @o4 = create(:shipped_order)
       @o5 = create(:cancelled_order)
-      create(:order_item, order: @o1, item: @i1, quantity: 1, price: 2)
+
+      create(:order_item, order: @o1, item: @i1, quantity: 100, price: 2)
       create(:order_item, order: @o1, item: @i2, quantity: 2, price: 2)
       create(:order_item, order: @o2, item: @i2, quantity: 4, price: 2)
       create(:order_item, order: @o3, item: @i1, quantity: 4, price: 2)
@@ -42,6 +46,11 @@ RSpec.describe Order, type: :model do
 
     it '.total_cost' do
       expect(@order.total_cost).to eq((@oi_1.quantity*@oi_1.price) + (@oi_2.quantity*@oi_2.price))
+    end
+
+    it ".insufficient_inventory?" do
+      expect(@o1.insufficient_inventory?).to eq(true)
+      expect(@o2.insufficient_inventory?).to eq(false)
     end
   end
 
