@@ -3,11 +3,12 @@ class User < ApplicationRecord
 
   enum role: [:default, :merchant, :admin]
 
-  validates_presence_of :name, :address, :city, :state, :zip
   validates :email, presence: true, uniqueness: true
+  validates_presence_of :name
 
   # as a consumer
   has_many :orders
+  has_many :addresses
   has_many :order_items, through: :orders
 
   # as a merchant
@@ -20,7 +21,7 @@ class User < ApplicationRecord
   def insufficient_items
     quantified_items.find_all {|item| item.inventory < item.total_quantity}
   end
-  
+
   def items_without_pictures
     default_image_url = "%https://picsum.photos/%"
 
