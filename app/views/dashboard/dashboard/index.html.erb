@@ -1,6 +1,6 @@
 <h1>Merchant Dashboard</h1>
 
-<div class="card float-left m-3 order-item-card">
+<div class="card float-left m-2 order-item-card">
   <div class="card-body">
     <h5 class="card-title"><%= @merchant.name %></h5>
     <p>Role: <%= @merchant.role %></p>
@@ -10,38 +10,51 @@
     <p>State: <%= @merchant.state %></p>
     <p>Zip: <%= @merchant.zip %></p>
     <%= button_to 'Downgrade to User', admin_downgrade_merchant_path(@merchant), method: :patch if current_admin? %>
+    <section>
+      <p>
+      <% if current_merchant? && current_user == @merchant %>
+        <%= link_to 'Items for Sale', dashboard_items_path %>
+      <% elsif current_admin? %>
+        <%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
+      <% end %>
+      </p>
+    </section>
   </div>
 </div>
 
 <% if current_merchant? %>
-  <div class="to-do-list">
-    <h5>To-Do List</h5>
-    <% unless @items_without_pictures.empty? %>
-    <section id="items-without-pictures">
-      <p>Add photos for these items to increase sales:</p>
-      <% @items_without_pictures.each do |item| %>
-        <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
-      <% end %>
-    </section>
+  <%= tag.div class: "card" do %>
+    <%= tag.section class: "to-do card-body float-right m-2" do %>
+      <div class="to-do-list">
+        <h5>To-Do List</h5>
+        <% unless @items_without_pictures.empty? %>
+        <section id="items-without-pictures">
+          <p>Add photos for these items to increase sales:</p>
+          <% @items_without_pictures.each do |item| %>
+            <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
+          <% end %>
+        </section>
+        <% end %>
+        <% unless @insufficient_items.empty? %>
+        <section id="items-with-insufficient-inventory">
+          <p style="color:red;">"These items have insufficient inventory to fulfill all orders and need to be restocked:"</p>
+          <% @insufficient_items.each do |item| %>
+            <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
+          <% end %>
+        </section>
+        <% end %>
+        <% unless @pending_orders.empty? %>
+        <section id="unfulfilled-item-revenue">
+          <p style="color:red;">You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
+        </section>
+        <% end %>
+      </div>
     <% end %>
-    <% unless @insufficient_items.empty? %>
-    <section id="items-with-insufficient-inventory">
-      <p style="color:red;">"These items have insufficient inventory to fulfill all orders and need to be restocked:"</p>
-      <% @insufficient_items.each do |item| %>
-        <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
-      <% end %>
-    </section>
-    <% end %>
-    <% unless @pending_orders.empty? %>
-    <section id="unfulfilled-item-revenue">
-      <p style="color:red;">You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
-    </section>
-    <% end %>
-  </div>
+  <% end %>
 <% end %>
 
 <%= tag.div class: "card" do %>
-  <%= tag.section class: "statistics card-body float-left m-4" do %>
+  <%= tag.section class: "statistics card-body float-left m-2" do %>
     <%= tag.section id: "top-items-sold-by-quantity", class: "card-body float-left m-2" do %>
       <h5 class="card-title">Top Items Sold by Quantity</h5>
       <ul>
@@ -96,16 +109,6 @@
     <% end %>
   <% end %>
 <% end %>
-
-<section>
-  <p>
-  <% if current_merchant? && current_user == @merchant %>
-  <%= link_to 'Items for Sale', dashboard_items_path %>
-  <% elsif current_admin? %>
-  <%= link_to 'Items for Sale', admin_merchant_items_path(@merchant) %>
-  <% end %>
-  </p>
-</section>
 
 <% if @pending_orders %>
   <table class="table">
