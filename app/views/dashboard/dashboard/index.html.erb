@@ -24,9 +24,17 @@
       <% end %>
     </section>
     <% end %>
+    <% if @items_with_insufficient_inventory %>
+    <section id="items-with-insufficient-inventory">
+      <p style="color:red;">These items have insufficient inventory need to be restocked:</p>
+      <% @items_with_insufficient_inventory.each do |item| %>
+        <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
+      <% end %>
+    </section>
+    <% end %>
     <% unless @pending_orders.empty? %>
     <section id="unfulfilled-item-revenue">
-      <p>You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
+      <p style="color:red;">You have <%= pluralize(@pending_orders.count, 'unfulfilled order') %> worth <%= number_to_currency(@pending_orders.revenue_for_merchant(@merchant)) %>!</p>
     </section>
     <% end %>
   </div>
