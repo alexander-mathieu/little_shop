@@ -24,10 +24,10 @@
       <% end %>
     </section>
     <% end %>
-    <% if @items_with_insufficient_inventory %>
+    <% if @insufficient_items %>
     <section id="items-with-insufficient-inventory">
       <p style="color:red;">These items have insufficient inventory need to be restocked:</p>
-      <% @items_with_insufficient_inventory.each do |item| %>
+      <% @insufficient_items.each do |item| %>
         <p><%= link_to item.name, edit_dashboard_item_path(item) %></p>
       <% end %>
     </section>
