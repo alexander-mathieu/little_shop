@@ -17,6 +17,10 @@ class User < ApplicationRecord
     items.where(active: true).order(:name)
   end
 
+  def insufficient_items
+    quantified_items.find_all {|item| item.inventory < item.total_quantity}
+  end
+  
   def items_without_pictures
     default_image_url = "%https://picsum.photos/%"
 
@@ -162,5 +166,15 @@ class User < ApplicationRecord
         .select('users.city, users.state, count(orders.id) AS order_count')
         .order('order_count DESC')
         .limit(limit)
+  end
+
+  private
+
+  def quantified_items
+    items.select('items.*, SUM(order_items.quantity) AS total_quantity')
+    .joins(order_items: :order)
+    .where(orders: {status: :pending})
+    .order(:name)
+    .group(:id)
   end
 end
