@@ -144,7 +144,7 @@ RSpec.describe 'merchant dashboard' do
     it 'shows items that have insufficient inventory to fulfill all orders' do
       within '.to-do-list' do
         within '#items-with-insufficient-inventory' do
-          expect(page).to have_content("These items have insufficient inventory need to be restocked:")
+          expect(page).to have_content("These items have insufficient inventory to fulfill all orders and need to be restocked:")
 
           expect(page).to have_link(@i3.name)
           expect(page).to have_link(@i4.name)
