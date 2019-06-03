@@ -74,12 +74,12 @@ RSpec.describe User, type: :model do
       u5 = create(:user)
       u6 = create(:user)
 
-      @a1 = @u1.addresses.create!(zip: "Zip 1", address: "Address 1", state: "CO", city: "Anywhere")
-      @a2 = @u2.addresses.create!(zip: "Zip 2", address: "Address 2", state: "OK", city: "Tulsa")
-      @a3 = @u3.addresses.create!(zip: "Zip 3", address: "Address 3", state: "IA", city: "Anywhere")
-      @a4 = u4.addresses.create!(zip: "Zip 4", address: "Address 4", state: "IA", city: "Des Moines")
-      @a5 = u5.addresses.create!(zip: "Zip 5", address: "Address 5", state: "IA", city: "Des Moines")
-      @a6 = u6.addresses.create!(zip: "Zip 6", address: "Address 6", state: "IA", city: "Des Moines")
+      @a1 = @u1.addresses.create(zip: "Zip 1", address: "Address 1", state: "CO", city: "Anywhere")
+      @a2 = @u2.addresses.create(zip: "Zip 2", address: "Address 2", state: "OK", city: "Tulsa")
+      @a3 = @u3.addresses.create(zip: "Zip 3", address: "Address 3", state: "IA", city: "Anywhere")
+      @a4 = u4.addresses.create(zip: "Zip 4", address: "Address 4", state: "IA", city: "Des Moines")
+      @a5 = u5.addresses.create(zip: "Zip 5", address: "Address 5", state: "IA", city: "Des Moines")
+      @a6 = u6.addresses.create(zip: "Zip 6", address: "Address 6", state: "IA", city: "Des Moines")
 
       @m1 = create(:merchant)
 
@@ -130,7 +130,7 @@ RSpec.describe User, type: :model do
     end
 
     it ".home_address" do
-      expect(@u1.home_address).to eq(@a1)
+      expect(@u1.home_address).to eq(1)
     end
 
     it ".insufficient_items" do
