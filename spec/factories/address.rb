@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :address do
     user
-
     sequence(:nickname) { |n| "Nickname #{n}" }
     sequence(:address) { |n| "Address #{n}" }
     sequence(:state) { |n| "State #{n}" }

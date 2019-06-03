@@ -14,6 +14,13 @@ class User < ApplicationRecord
   # as a merchant
   has_many :items, foreign_key: 'merchant_id'
 
+  validates_associated :addresses
+  accepts_nested_attributes_for :addresses
+
+  def home_address
+    addresses.find_by(nickname: "home")
+  end
+
   def active_items
     items.where(active: true).order(:name)
   end
@@ -55,23 +62,19 @@ class User < ApplicationRecord
   end
 
   def top_states_by_items_shipped(limit)
-    items.joins(:order_items)
-         .joins('join orders on orders.id = order_items.order_id')
-         .joins('join users on users.id = orders.user_id')
-         .where(order_items: {fulfilled: true}, orders: {status: :shipped})
-         .group('users.state')
-         .select('users.state, sum(order_items.quantity) AS quantity')
+    items.select('addresses.state, sum(order_items.quantity) as quantity')
+         .joins(orders: :address)
+         .where(order_items: {fulfilled: true}, orders: {status: 2})
+         .group('addresses.state')
          .order('quantity DESC')
          .limit(limit)
   end
 
   def top_cities_by_items_shipped(limit)
-    items.joins(:order_items)
-         .joins('join orders on orders.id = order_items.order_id')
-         .joins('join users on users.id = orders.user_id')
-         .where(order_items: {fulfilled: true}, orders: {status: :shipped})
-         .group('users.state, users.city')
-         .select('users.state, users.city, sum(order_items.quantity) AS quantity')
+    items.select('addresses.state, addresses.city, sum(order_items.quantity) as quantity')
+         .joins(orders: :address)
+         .where(order_items: {fulfilled: true}, orders: {status: 2})
+         .group('addresses.state, addresses.city')
          .order('quantity DESC')
          .limit(limit)
   end

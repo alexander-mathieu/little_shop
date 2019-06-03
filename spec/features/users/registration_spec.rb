@@ -6,13 +6,13 @@ RSpec.describe 'the registration page' do
       visit registration_path
 
       fill_in :user_name, with: "name"
-      fill_in :user_address, with: "address"
-      fill_in :user_city, with: "city"
-      fill_in :user_state, with: "state"
-      fill_in :user_zip, with: "zip"
       fill_in :user_email, with: "example@gmail.com"
       fill_in :user_password, with: "password"
       fill_in :user_password_confirmation, with: "password"
+      fill_in :user_addresses_attributes_0_zip, with: "zip"
+      fill_in :user_addresses_attributes_0_city, with: "city"
+      fill_in :user_addresses_attributes_0_state, with: "state"
+      fill_in :user_addresses_attributes_0_address, with: "address"
 
       click_button "Submit"
 
@@ -26,7 +26,7 @@ RSpec.describe 'the registration page' do
   end
 
   describe 'sad path' do
-    xit "should display error messages for each unfilled field" do
+    it "should display error messages for each unfilled field" do
       visit registration_path
 
       click_button "Submit"
@@ -49,13 +49,13 @@ RSpec.describe 'the registration page' do
       visit registration_path
 
       fill_in :user_name, with: "name_1"
-      fill_in :user_address, with: "address_1"
-      fill_in :user_city, with: "city_1"
-      fill_in :user_state, with: "state_1"
-      fill_in :user_zip, with: "zip_1"
       fill_in :user_email, with: "example@gmail.com"
       fill_in :user_password, with: "password"
       fill_in :user_password_confirmation, with: "password"
+      fill_in :user_addresses_attributes_0_zip, with: "zip_1"
+      fill_in :user_addresses_attributes_0_city, with: "city_1"
+      fill_in :user_addresses_attributes_0_state, with: "state_1"
+      fill_in :user_addresses_attributes_0_address, with: "address_1"
 
       click_button "Submit"
 
@@ -75,18 +75,40 @@ RSpec.describe 'the registration page' do
       visit registration_path
 
       fill_in :user_name, with: "name"
-      fill_in :user_address, with: "address"
-      fill_in :user_city, with: "city"
-      fill_in :user_state, with: "state"
-      fill_in :user_zip, with: "zip"
       fill_in :user_email, with: "example@gmail.com"
       fill_in :user_password, with: "password"
       fill_in :user_password_confirmation, with: "a different password"
+      fill_in :user_addresses_attributes_0_zip, with: "zip"
+      fill_in :user_addresses_attributes_0_city, with: "city"
+      fill_in :user_addresses_attributes_0_state, with: "state"
+      fill_in :user_addresses_attributes_0_address, with: "address"
 
       click_button "Submit"
 
       expect(current_path).to eq(registration_path)
       expect(page).to have_content("Password confirmation doesn't match Password")
+    end
+  end
+
+  describe "when a visitor registers as a user" do
+    it "the address provided becomes their 'home' address" do
+      visit registration_path
+
+      fill_in :user_name, with: "name"
+      fill_in :user_email, with: "example@gmail.com"
+      fill_in :user_password, with: "password"
+      fill_in :user_password_confirmation, with: "password"
+      fill_in :user_addresses_attributes_0_zip, with: "zip"
+      fill_in :user_addresses_attributes_0_city, with: "city"
+      fill_in :user_addresses_attributes_0_state, with: "state"
+      fill_in :user_addresses_attributes_0_address, with: "address"
+
+      click_button "Submit"
+
+      user = User.last
+      address = Address.last
+
+      expect(user.home_address).to eq(address)
     end
   end
 end
