@@ -20,19 +20,19 @@ RSpec.describe 'user profile', type: :feature do
           expect(page).to have_content("Addresses: #{@user.home_address.address} #{@user.home_address.city}, #{@user.home_address.state} #{@user.home_address.zip}")
           expect(page).to have_content("#{@user.city}, #{@user.state} #{@user.zip}")
 
-          expect(page).to have_link("Show All Addresses")
+          expect(page).to have_link("Edit Addresses")
         end
 
         expect(page).to have_link('Edit Profile')
       end
     end
 
-    it "displays a link to 'Show All Addresses'" do
+    it "displays a link to 'Edit Addresses'" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
       visit profile_path
 
-      click_link 'Show All Addresses'
+      click_link 'Edit Addresses'
 
       expect(current_path).to eq(profile_addresses_path)
     end
@@ -45,7 +45,7 @@ RSpec.describe 'user profile', type: :feature do
 
         visit profile_path
 
-        click_link 'Edit'
+        click_link 'Edit Profile'
 
         expect(current_path).to eq('/profile/edit')
 
