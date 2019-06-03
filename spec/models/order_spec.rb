@@ -7,6 +7,7 @@ RSpec.describe Order, type: :model do
 
   describe 'relationships' do
     it { should belong_to :user }
+    it { should belong_to :address }
     it { should have_many :order_items }
     it { should have_many(:items).through(:order_items) }
   end
@@ -14,8 +15,10 @@ RSpec.describe Order, type: :model do
   describe 'instance methods' do
     before :each do
       user = create(:user)
+
       @item_1 = create(:item)
       @item_2 = create(:item)
+
       yesterday = 1.day.ago
 
       @order = create(:order, user: user, created_at: yesterday)
@@ -57,7 +60,9 @@ RSpec.describe Order, type: :model do
   describe 'class methods' do
     before :each do
       user = create(:user)
+
       @merchant = create(:merchant)
+
       @i1, @i2 = create_list(:item, 2, user: @merchant)
 
       @o1, @o2, @o3, @o4, @o5 = create_list(:shipped_order, 5, user: user)
