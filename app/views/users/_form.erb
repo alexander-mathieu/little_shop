@@ -5,29 +5,31 @@
 </p>
 
 <p>
-  <%= f.label :address %>:
-  <%= f.text_field :address %>
-</p>
-
-<p>
-  <%= f.label :city %>:
-  <%= f.text_field :city %>
-</p>
-
-<p>
-  <%= f.label :state %>:
-  <%= f.text_field :state %>
-</p>
-
-<p>
-  <%= f.label :zip %>:
-  <%= f.text_field :zip %>
-</p>
-
-<p>
   <%= f.label :email %>:
   <%= f.text_field :email %>
 </p>
+
+  <%= f.fields_for :addresses do |a| %>
+  <p>
+    <%= a.label :address %>:
+    <%= a.text_field :address %>
+  </p>
+
+  <p>
+    <%= a.label :city %>:
+    <%= a.text_field :city %>
+  </p>
+
+  <p>
+    <%= a.label :state %>:
+    <%= a.text_field :state %>
+  </p>
+
+  <p>
+    <%= a.label :zip %>:
+    <%= a.text_field :zip %>
+  </p>
+  <% end %>
 
 <p>
   <%= f.label :password %>:
