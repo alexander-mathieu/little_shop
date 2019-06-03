@@ -5,4 +5,8 @@ class Profile::AddressesController < ApplicationController
     user = current_user
     @addresses = user.addresses
   end
+
+  def new
+
+  end
 end
