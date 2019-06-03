@@ -1,19 +1,26 @@
 <h1>Profile Page for <%= @user.name %></h1>
 
 <section id="profile-data">
-  <h2>Order Data</h2>
+  <h2>Personal Information</h2>
   <p>Email: <%= @user.email %></p>
   <p>Role: <%= @user.role %></p>
-  <aside id="address-details">
-    <h3>Address:</h3>
-    <p><%= @user.address %></p>
-    <p>
-      <%= @user.city %>,
-      <%= @user.state %>
-      <%= @user.zip %>
-    </p>
-  </aside>
   <p><%= link_to 'Edit Profile Data', edit_profile_path unless current_admin? %></p>
+  <aside id="address-details">
+    <h3>Addresses:</h3>
+    <% if @user.addresses.any? %>
+      <% @user.addresses.each do |address| %>
+        <p><%= address.address %></p>
+        <p>
+          <%= address.city %>,
+          <%= address.state %>
+          <%= address.zip %>
+        </p>
+      <% end %>
+      <p><%= link_to 'Show All Addresses', profile_addresses_path unless current_admin? %></p>
+    <% else %>
+      <p>You don't have any addresses yet.</p>
+    <% end %>
+  </aside>
 </section>
 
 <section id="orders-data">
