@@ -31,22 +31,22 @@ RSpec.describe 'Profile Addresses page', type: :feature do
 
       within "#address-#{@address_1.id}" do
         expect(page).to have_content(@address_1.nickname)
-        expect(page).to have_content("#{@address_1.address}, #{@address.city}, #{@address.state} #{@address.zip}")
+        expect(page).to have_content("#{@address_1.address} #{@address_1.city}, #{@address_1.state} #{@address_1.zip}")
       end
 
-      within "#address-#{@address_1.id}" do
-        expect(page).to have_content(@address_1.nickname)
-        expect(page).to have_content("#{@address_1.address}, #{@address.city}, #{@address.state} #{@address.zip}")
+      within "#address-#{@address_2.id}" do
+        expect(page).to have_content(@address_2.nickname)
+        expect(page).to have_content("#{@address_2.address} #{@address_2.city}, #{@address_2.state} #{@address_2.zip}")
       end
 
-      within "#address-#{@address_1.id}" do
-        expect(page).to have_content(@address_1.nickname)
-        expect(page).to have_content("#{@address_1.address}, #{@address.city}, #{@address.state} #{@address.zip}")
+      within "#address-#{@address_3.id}" do
+        expect(page).to have_content(@address_3.nickname)
+        expect(page).to have_content("#{@address_3.address} #{@address_3.city}, #{@address_3.state} #{@address_3.zip}")
       end
 
-      within "#address-#{@address_1.id}" do
-        expect(page).to have_content(@address_1.nickname)
-        expect(page).to have_content("#{@address_1.address}, #{@address.city}, #{@address.state} #{@address.zip}")
+      within "#address-#{@address_4.id}" do
+        expect(page).to have_content(@address_4.nickname)
+        expect(page).to have_content("#{@address_4.address} #{@address_4.city}, #{@address_4.state} #{@address_4.zip}")
       end
     end
   end
