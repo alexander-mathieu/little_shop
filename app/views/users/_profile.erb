@@ -4,7 +4,7 @@
   <h2>Personal Information</h2>
   <p>Email: <%= @user.email %></p>
   <p>Role: <%= @user.role %></p>
-  <p><%= link_to 'Edit Profile Data', edit_profile_path unless current_admin? %></p>
+  <p><%= link_to 'Edit Profile', edit_profile_path unless current_admin? %></p>
   <aside id="address-details">
     <h3>Addresses:</h3>
     <% if @user.addresses.any? %>
@@ -16,7 +16,7 @@
           <%= address.zip %>
         </p>
       <% end %>
-      <p><%= link_to 'Show All Addresses', profile_addresses_path unless current_admin? %></p>
+      <p><%= link_to 'Edit Addresses', profile_addresses_path unless current_admin? %></p>
     <% else %>
       <p>You don't have any addresses yet.</p>
     <% end %>
