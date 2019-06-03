@@ -20,6 +20,14 @@ RSpec.describe 'Profile Addresses page', type: :feature do
     it 'should display a link to add an address' do
       expect(page).to have_link("Add an Address")
     end
+
+    describe "when I click 'Add an Address'" do
+      it "I'm navigated to the new address path'" do
+        click_link 'Add an Address'
+
+        expect(current_path).to eq(new_profile_address_path)
+      end
+    end
   end
 
   context 'as a registered user with multiple addresses' do
