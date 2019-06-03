@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = current_user
+    @user.addresses.build
   end
 
   def create
@@ -33,6 +34,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     @user.update(user_update_params)
+
     if @user.save
       flash[:success] = "Your profile has been updated"
       redirect_to profile_path
