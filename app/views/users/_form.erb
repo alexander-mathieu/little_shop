@@ -9,26 +9,28 @@
   <%= f.text_field :email %>
 </p>
 
-  <%= f.fields_for :addresses do |a| %>
-  <p>
-    <%= a.label :address %>:
-    <%= a.text_field :address %>
-  </p>
+  <% if current_page?(registration_path) %>
+    <%= f.fields_for :addresses do |a| %>
+    <p>
+      <%= a.label :address %>:
+      <%= a.text_field :address %>
+    </p>
 
-  <p>
-    <%= a.label :city %>:
-    <%= a.text_field :city %>
-  </p>
+    <p>
+      <%= a.label :city %>:
+      <%= a.text_field :city %>
+    </p>
 
-  <p>
-    <%= a.label :state %>:
-    <%= a.text_field :state %>
-  </p>
+    <p>
+      <%= a.label :state %>:
+      <%= a.text_field :state %>
+    </p>
 
-  <p>
-    <%= a.label :zip %>:
-    <%= a.text_field :zip %>
-  </p>
+    <p>
+      <%= a.label :zip %>:
+      <%= a.text_field :zip %>
+    </p>
+    <% end %>
   <% end %>
 
 <p>
