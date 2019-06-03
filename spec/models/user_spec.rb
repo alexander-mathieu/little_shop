@@ -99,15 +99,15 @@ RSpec.describe User, type: :model do
 
       @i10 = create(:item, merchant_id: @m2.id, inventory: 20)
 
-      o1 = create(:shipped_order, user: @u1)
-      o2 = create(:shipped_order, user: @u2)
-      o3 = create(:shipped_order, user: @u3)
-      o4 = create(:shipped_order, user: @u1)
-      o5 = create(:shipped_order, user: @u1)
-      o6 = create(:cancelled_order, user: u5)
-      o7 = create(:order, user: u6)
-      o8 = create(:order, user: u6)
-      o9 = create(:order, user: u6)
+      o1 = create(:shipped_order, user: @u1, address: @u1.home_address)
+      o2 = create(:shipped_order, user: @u2, address: @u2.home_address)
+      o3 = create(:shipped_order, user: @u3, address: @u3.home_address)
+      o4 = create(:shipped_order, user: @u1, address: @u1.home_address)
+      o5 = create(:shipped_order, user: @u1, address: @u1.home_address)
+      o6 = create(:cancelled_order, user: u5, address: u5.home_address)
+      o7 = create(:order, user: u6, address: u6.home_address)
+      o8 = create(:order, user: u6, address: u6.home_address)
+      o9 = create(:order, user: u6, address: u6.home_address)
 
       @oi1 = create(:order_item, item: @i1, order: o1, quantity: 2, created_at: 1.days.ago)
       @oi2 = create(:order_item, item: @i2, order: o2, quantity: 8, created_at: 7.days.ago)
@@ -130,7 +130,7 @@ RSpec.describe User, type: :model do
     end
 
     it ".home_address" do
-      expect(@u1.home_address).to eq(1)
+      expect(@u1.home_address).to eq(@a1)
     end
 
     it ".insufficient_items" do
