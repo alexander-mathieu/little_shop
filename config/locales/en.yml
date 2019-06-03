@@ -31,3 +31,14 @@
 
 en:
   hello: "Hello world"
+
+en:
+  activerecord:
+    attributes:
+      user:
+        addresses: "Address"
+      user/addresses:
+        zip: "Zip"
+        city: "City"
+        state: "State"
+        address: "Address"
