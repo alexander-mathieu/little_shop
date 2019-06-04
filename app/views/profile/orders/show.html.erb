@@ -9,7 +9,9 @@
 
   <% if @order.status == 'pending' || @order.status == 'packaged' %>
   <p><%= button_to 'Cancel Order', profile_order_path(@order), method: :delete %></p>
-  <p><%= button_to 'Change Shipping Address' %>  </p>
+    <% if current_user.address_count > 1 %>
+      <p><%= button_to 'Change Shipping Address', order_address_path(@order), method: :get %></p>
+    <% end %>
   <% end %>
 
   <% @order.order_items.each do |oitem| %>
@@ -17,5 +19,4 @@
       <%= render partial: "/profile/orders/order_item_card", locals: {oitem: oitem, img_width: 150} %>
     <% end %>
   <% end %>
-
 <% end %>
