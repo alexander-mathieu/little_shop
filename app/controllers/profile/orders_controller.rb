@@ -39,4 +39,19 @@ class Profile::OrdersController < ApplicationController
     flash[:success] = "Your order has been created!"
     redirect_to profile_orders_path
   end
+
+  def address_index
+    @user = current_user
+    @order = Order.find(params[:id])
+  end
+
+  def change_address
+    order = Order.find(params[:order_id])
+    address = Address.find(params[:address_id])
+    order.update(address: address)
+
+    flash[:success] = "Shipping address updated!"
+
+    redirect_to profile_order_path(order)
+  end
 end

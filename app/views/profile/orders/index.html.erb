@@ -13,6 +13,7 @@
           <p>Status: <%= order.status %></p>
           <p>Item Count: <%= order.total_item_count %></p>
           <p>Total Cost: <%= order.total_cost %></p>
+          <p>Shipping Address: <%= order.address.nickname %> - <%= order.address.address %>, <%= order.address.city %>, <%= order.address.state %> <%= order.address.zip %>
         <% end %>
       <% end %>
     <% end %>

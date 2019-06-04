@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get '/profile', to: 'users#show', as: :profile
   get '/profile/edit', to: 'users#edit', as: :edit_profile
   patch '/profile/edit', to: 'users#update'
+  get '/profile/orders/:id/addresses', to: 'profile/orders#address_index', as: :order_address
+  patch '/profile/orders/:id', to: 'profile/orders#change_address', as: :order_address_change
   namespace :profile do
     resources :orders, only: [:index, :show, :destroy, :create]
     resources :addresses, only: [:index, :new, :create, :edit, :update, :destroy]

@@ -121,6 +121,10 @@ RSpec.describe User, type: :model do
       expect(@u1.home_address).to eq(@a1)
     end
 
+    it ".address_count" do
+      expect(@u1.address_count).to eq(1)
+    end
+
     it ".insufficient_items" do
       expect(@m1.insufficient_items). to eq([@i12, @i11])
     end

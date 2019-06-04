@@ -21,12 +21,20 @@ class User < ApplicationRecord
     addresses.find_by(nickname: "home")
   end
 
+  def address_count
+    addresses.count
+  end
+
   def active_items
     items.where(active: true).order(:name)
   end
 
   def insufficient_items
-    quantified_items.find_all {|item| item.inventory < item.total_quantity}
+    items.joins(:orders)
+         .where(orders: {status: :pending})
+         .having('items.inventory < SUM(order_items.quantity)')
+         .order(:name)
+         .group(:id)
   end
 
   def items_without_pictures
@@ -170,15 +178,5 @@ class User < ApplicationRecord
          .group('addresses.state, addresses.city')
          .order('order_count DESC')
          .limit(limit)
-  end
-
-  private
-
-  def quantified_items
-    items.select('items.*, SUM(order_items.quantity) AS total_quantity')
-    .joins(order_items: :order)
-    .where(orders: {status: :pending})
-    .order(:name)
-    .group(:id)
   end
 end
