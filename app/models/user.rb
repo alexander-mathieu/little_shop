@@ -155,21 +155,21 @@ class User < ApplicationRecord
   end
 
   def self.top_user_states_by_order_count(limit)
-    self.joins(:orders)
-        .where(orders: {status: :shipped})
-        .group(:state)
-        .select('users.state, count(orders.id) AS order_count')
-        .order('order_count DESC')
-        .limit(limit)
+    self.select('addresses.state, count (orders.id) AS order_count')
+         .joins(orders: :address)
+         .where(orders: {status: 2})
+         .group('addresses.state')
+         .order('order_count DESC')
+         .limit(limit)
   end
 
   def self.top_user_cities_by_order_count(limit)
-    self.joins(:orders)
-        .where(orders: {status: :shipped})
-        .group(:state, :city)
-        .select('users.city, users.state, count(orders.id) AS order_count')
-        .order('order_count DESC')
-        .limit(limit)
+    self.select('addresses.city, addresses.state, count (orders.id) AS order_count')
+         .joins(orders: :address)
+         .where(orders: {status: 2})
+         .group('addresses.state, addresses.city')
+         .order('order_count DESC')
+         .limit(limit)
   end
 
   private
