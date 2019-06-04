@@ -50,7 +50,7 @@ class Profile::OrdersController < ApplicationController
     address = Address.find(params[:address_id])
     order.update(address: address)
 
-    flash[:success] = "Shipping address updated!."
+    flash[:success] = "Shipping address updated!"
 
     redirect_to profile_order_path(order)
   end
