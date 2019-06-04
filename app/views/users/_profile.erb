@@ -19,6 +19,7 @@
       <p><%= link_to 'Edit Addresses', profile_addresses_path unless current_admin? %></p>
     <% else %>
       <p>You don't have any addresses yet.</p>
+      <p><%= link_to 'Add an Address', new_profile_address_path unless current_admin? %></p>
     <% end %>
   </aside>
 </section>

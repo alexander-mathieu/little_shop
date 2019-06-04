@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe 'user profile', type: :feature do
   before :each do
     @user = create(:user)
+    @no_address_user = create(:user)
+
     @address = @user.addresses.create(zip: "Zip 1", address: "Address 1", state: "State 1", city: "City 1")
   end
 
@@ -25,6 +27,21 @@ RSpec.describe 'user profile', type: :feature do
 
         expect(page).to have_link('Edit Profile')
       end
+    end
+
+    it 'users with no addresses see a notice and a link to create an address' do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@no_address_user)
+
+      visit profile_path
+
+      within '#address-details' do
+        expect(page).to have_link('Add an Address')
+        expect(page).to_not have_link('Edit Addresses')
+
+        click_link 'Add an Address'
+      end
+
+      expect(current_path).to eq(new_profile_address_path)
     end
 
     it "displays a link to 'Edit Addresses'" do

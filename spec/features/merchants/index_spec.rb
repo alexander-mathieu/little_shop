@@ -13,12 +13,12 @@ RSpec.describe "merchant index workflow", type: :feature do
         @address_3 = @inactive_merchant.addresses.create(zip: "Zip 3", address: "Address 3", state: "State 3", city: "City 3")
       end
 
-      scenario 'as a visitor' do
+      xscenario 'as a visitor' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(nil)
         @am_admin = false
       end
 
-      scenario 'as an admin' do
+      xscenario 'as an admin' do
         admin = create(:admin)
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
         @am_admin = true

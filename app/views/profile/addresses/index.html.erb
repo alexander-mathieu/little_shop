@@ -1,0 +1,23 @@
+<h2>All Addresses</h2>
+
+<% if @addresses.empty? %>
+  <p>You don't have any addresses yet.</p>
+<% else %>
+  <section class="all-addresses">
+    <% @addresses.each do |address| %>
+    <div id="address-<%= address.id %>">
+      <h6><%= address.nickname %></h6>
+      <p><%= address.address %></p>
+      <p>
+        <%= address.city %>,
+        <%= address.state %>
+        <%= address.zip %>
+      </p>
+      <%= link_to "Edit", edit_profile_address_path(address) %>
+      <%= link_to "Delete", "/profile/addresses/#{address.id}", method: :delete %>
+    </div>
+    <% end %>
+  </section>
+<% end %>
+
+<%= link_to 'Add an Address', new_profile_address_path %>
