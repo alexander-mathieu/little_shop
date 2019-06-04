@@ -27,6 +27,25 @@ RSpec.describe 'Profile Addresses page', type: :feature do
 
         expect(current_path).to eq(new_profile_address_path)
       end
+
+      it "and create a new address, I see that address on my address index" do
+        click_link 'Add an Address'
+
+        fill_in :address_zip, with: 'zip 1'
+        fill_in :address_city, with: 'city 1'
+        fill_in :address_state, with: 'state 1'
+        fill_in :address_address, with: 'address 1'
+        fill_in :address_nickname, with: 'nickname 1'
+
+        click_button 'Save Address'
+
+        address = Address.last
+
+        within "#address-#{address.id}" do
+          expect(page).to have_content(address.nickname)
+          expect(page).to have_content("#{address.address} #{address.city}, #{address.state} #{address.zip}")
+        end
+      end
     end
   end
 
