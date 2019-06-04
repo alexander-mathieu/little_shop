@@ -7,6 +7,8 @@ RSpec.describe 'Site Nav', type: :feature do
     @merchant = create(:merchant)
     @admin = create(:admin)
 
+    @address = @merchant.addresses.create(zip: "Zip 1", address: "Address 1", state: "CO", city: "Fairfield")
+
     item_1 = create(:item, user: @merchant)
     order = create(:shipped_order, user: @user)
     create(:fulfilled_order_item, order: order, item: item_1, price: 1, quantity: 1, created_at: 2.days.ago, updated_at: 1.minutes.ago)
