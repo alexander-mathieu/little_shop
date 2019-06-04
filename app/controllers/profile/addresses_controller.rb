@@ -12,13 +12,13 @@ class Profile::AddressesController < ApplicationController
 
   def create
     user = current_user
-    address = user.addresses.new(address_params)
+    @address = user.addresses.new(address_params)
 
-    if address.save
+    if @address.save
       flash[:success] = "Address added!"
       redirect_to profile_addresses_path
     else
-      flash.now[:danger] = address.errors.full_messages
+      flash.now[:danger] = @address.errors.full_messages
       render :new
     end
   end
@@ -26,6 +26,6 @@ class Profile::AddressesController < ApplicationController
   private
 
   def address_params
-    params.require(:address).permit(:address, :city, :state, :zip, :nickname, :user_id)
+    params.require(:address).permit(:address, :city, :state, :zip, :nickname)
   end
 end
