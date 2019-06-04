@@ -3,7 +3,7 @@ class Order < ApplicationRecord
   belongs_to :address
   has_many :addresses
   has_many :order_items
-  has_many :items, through: :order_items
+  has_many :items, through: :order_items, dependent: :destroy
 
   validates_presence_of :status
 
