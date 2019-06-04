@@ -4,7 +4,13 @@
 <% else %>
   <h3>Total: <%= number_to_currency(cart.total) %></h3>
   <% if current_user %>
-    <%= button_to "Check Out", profile_orders_path, method: :post %>
+    <% if !current_user.addresses.empty? %>
+      <% current_user.addresses.each do |address| %>
+        <%= button_to "Checkout with #{address.address}", profile_orders_path(address_id: address.id), method: :post %>
+      <% end %>
+    <% else %>
+      <%= link_to "Please add an address to checkout!", new_profile_address_path %>
+    <% end %>
   <% else %>
     <p>You must <%= link_to "register", registration_path %>
       or <%= link_to "log in", login_path %> to check out.</p>
