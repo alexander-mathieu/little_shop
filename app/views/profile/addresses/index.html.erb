@@ -13,8 +13,10 @@
         <%= address.state %>
         <%= address.zip %>
       </p>
-      <%= link_to "Edit", edit_profile_address_path(address) %>
-      <%= link_to "Delete", "/profile/addresses/#{address.id}", method: :delete %>
+      <% if address.not_ordered? %>
+        <%= link_to "Edit", edit_profile_address_path(address) %>
+        <%= link_to "Delete", "/profile/addresses/#{address.id}", method: :delete, data: {confirm: "Deleting this address will destroy any pending orders associated with it.  Are you sure?"} %>
+      <% end %>
     </div>
     <% end %>
   </section>
