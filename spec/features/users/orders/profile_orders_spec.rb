@@ -7,6 +7,8 @@ RSpec.describe 'Profile Orders page', type: :feature do
     @user = create(:user)
     @admin = create(:admin)
 
+    @address = @user.addresses.create(nickname: 'Nickname 1', address: 'Address 1', city: 'City 1', state: 'State 1', zip: 'Zip 1')
+
     @merchant_1 = create(:merchant)
     @merchant_2 = create(:merchant)
 
@@ -27,7 +29,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
     describe 'should show information about each order when I do have orders' do
       before :each do
         yesterday = 1.day.ago
-        @order = create(:order, user: @user, created_at: yesterday)
+        @order = create(:order, user: @user, created_at: yesterday, address: @address)
         @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 1, created_at: yesterday, updated_at: yesterday)
         @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 1, created_at: yesterday, updated_at: 2.hours.ago)
       end
@@ -71,6 +73,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
         expect(page).to have_content("Created: #{@order.created_at}")
         expect(page).to have_content("Last Update: #{@order.updated_at}")
         expect(page).to have_content("Status: #{@order.status}")
+
         within "#oitem-#{@oi_1.id}" do
           expect(page).to have_content(@oi_1.item.name)
           expect(page).to have_content(@oi_1.item.description)
@@ -82,6 +85,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
           expect(page).to have_content("Subtotal: #{number_to_currency(@oi_1.price*@oi_1.quantity)}")
           expect(page).to have_content("Fulfilled: No")
         end
+
         within "#oitem-#{@oi_2.id}" do
           expect(page).to have_content(@oi_2.item.name)
           expect(page).to have_content(@oi_2.item.description)
@@ -92,6 +96,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
           expect(page).to have_content("Subtotal: #{number_to_currency(@oi_2.price*@oi_2.quantity)}")
           expect(page).to have_content("Fulfilled: Yes")
         end
+
         expect(page).to have_content("Item Count: #{@order.total_item_count}")
         expect(page).to have_content("Total Cost: #{number_to_currency(@order.total_cost)}")
       end

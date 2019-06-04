@@ -4,12 +4,18 @@ RSpec.describe 'merchant dashboard' do
   before :each do
     @merchant = create(:merchant)
     @admin = create(:admin)
+    @user = create(:user)
+
+    @user_address = @user.addresses.create(address: 'User Address', city: 'User City', state: 'User State', zip: 'User Zip')
+    @merchant_address = @merchant.addresses.create(address: 'Merchant Address', city: 'Merchant City', state: 'Merchant State', zip: 'Merchant Zip')
 
     @i1, @i2, @i3, @i4 = create_list(:item, 4, user: @merchant)
-    @o1, @o2, @o5, @o6 = create_list(:order, 4)
-
-    @o3 = create(:shipped_order)
-    @o4 = create(:cancelled_order)
+    @o1 = create(:order, address: @user_address)
+    @o2 = create(:order, address: @user_address)
+    @o5 = create(:order, address: @user_address)
+    @o6 = create(:order, address: @user_address)
+    @o3 = create(:shipped_order, address: @user_address)
+    @o4 = create(:cancelled_order, address: @user_address)
 
     create(:order_item, order: @o1, item: @i1, quantity: 1, price: 2)
     create(:order_item, order: @o1, item: @i2, quantity: 2, price: 2)
@@ -41,10 +47,10 @@ RSpec.describe 'merchant dashboard' do
       after :each do
         expect(page).to have_content(@merchant.name)
         expect(page).to have_content("Email: #{@merchant.email}")
-        expect(page).to have_content("Address: #{@merchant.address}")
-        expect(page).to have_content("City: #{@merchant.city}")
-        expect(page).to have_content("State: #{@merchant.state}")
-        expect(page).to have_content("Zip: #{@merchant.zip}")
+        expect(page).to have_content("Address: #{@merchant.home_address.address}")
+        expect(page).to have_content("City: #{@merchant.home_address.city}")
+        expect(page).to have_content("State: #{@merchant.home_address.state}")
+        expect(page).to have_content("Zip: #{@merchant.home_address.zip}")
       end
     end
 
@@ -77,10 +83,10 @@ RSpec.describe 'merchant dashboard' do
     it 'shows merchant information' do
       expect(page).to have_content(@merchant.name)
       expect(page).to have_content("Email: #{@merchant.email}")
-      expect(page).to have_content("Address: #{@merchant.address}")
-      expect(page).to have_content("City: #{@merchant.city}")
-      expect(page).to have_content("State: #{@merchant.state}")
-      expect(page).to have_content("Zip: #{@merchant.zip}")
+      expect(page).to have_content("Address: #{@merchant.home_address.address}")
+      expect(page).to have_content("City: #{@merchant.home_address.city}")
+      expect(page).to have_content("State: #{@merchant.home_address.state}")
+      expect(page).to have_content("Zip: #{@merchant.home_address.zip}")
     end
 
     it 'does not have a link to edit information' do

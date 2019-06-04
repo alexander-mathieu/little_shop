@@ -5,10 +5,10 @@
     <h5 class="card-title"><%= @merchant.name %></h5>
     <p>Role: <%= @merchant.role %></p>
     <p>Email: <%= @merchant.email %></p>
-    <p>Address: <%= @merchant.address %></p>
-    <p>City: <%= @merchant.city %></p>
-    <p>State: <%= @merchant.state %></p>
-    <p>Zip: <%= @merchant.zip %></p>
+    <p>Address: <%= @merchant.home_address.address %></p>
+    <p>City: <%= @merchant.home_address.city %></p>
+    <p>State: <%= @merchant.home_address.state %></p>
+    <p>Zip: <%= @merchant.home_address.zip %></p>
     <%= button_to 'Downgrade to User', admin_downgrade_merchant_path(@merchant), method: :patch if current_admin? %>
     <section>
       <p>
