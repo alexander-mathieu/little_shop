@@ -7,11 +7,20 @@ RSpec.describe 'merchant order show workflow' do
     before :each do
       @merchant1 = create(:merchant)
       @merchant2 = create(:merchant)
+
       @user = create(:user)
-      @order = create(:order, user: @user)
+
+      @merchant1_address = @merchant1.addresses.create(address: "Merchant1 Address", city: "Merchant1 City", state: "Merchant1 State", zip: "Merchant1 Zip")
+      @merchant2_address = @merchant2.addresses.create(address: "Merchant2 Address", city: "Merchant2 City", state: "Merchant2 State", zip: "Merchant2 Zip")
+
+      @user_address = @user.addresses.create(address: 'User Address', city: 'User City', state: 'User State', zip: 'User Zip')
+
+      @order = create(:order, user: @user, address: @user_address)
+
       @item1 = create(:item, user: @merchant1, inventory: 2)
       @item2 = create(:item, user: @merchant2, inventory: 2)
       @item3 = create(:item, user: @merchant1, inventory: 2)
+
       @oi1 = create(:order_item, order: @order, item: @item1, quantity: 1, price: 2)
       @oi2 = create(:order_item, order: @order, item: @item2, quantity: 2, price: 3)
       @oi3 = create(:order_item, order: @order, item: @item3, quantity: 3, price: 4)
@@ -32,7 +41,7 @@ RSpec.describe 'merchant order show workflow' do
         visit dashboard_order_path(@order)
 
         expect(page).to have_content("Customer Name: #{@user.name}")
-        expect(page).to have_content("Customer Address: #{@user.address} #{@user.city}, #{@user.state} #{@user.zip}")
+        expect(page).to have_content("Shipping Address: #{@order.address.address} #{@order.address.city}, #{@order.address.state} #{@order.address.zip}")
       end
 
       it 'shows item information for that merchant' do
@@ -93,16 +102,18 @@ RSpec.describe 'merchant order show workflow' do
           @admin = create(:admin)
 
           @merchant_1 = create(:merchant)
+
+          @merchant_1_address = @merchant_1.addresses.create(address: "Merchant_1 Address", city: "Merchant_1 City", state: "Merchant_1 State", zip: "Merchant_1 Zip")
+
           item_1 = create(:item, user: @merchant_1, inventory: 100)
           item_3 = create(:item, user: @merchant_1)
-
           item_2 = create(:item)
 
           @order_1 = create(:order, user: user)
+          @order_2 = create(:order, user: user)
+
           @oi_1 = create(:order_item, order: @order_1, item: item_1, price: 1, quantity: 10)
           create(:fulfilled_order_item, order: @order_1, item: item_2, price: 1, quantity: 1)
-
-          @order_2 = create(:order, user: user)
           @oi_3 = create(:order_item, order: @order_2, item: item_3, price: 1, quantity: 1)
         end
 
