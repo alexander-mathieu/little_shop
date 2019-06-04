@@ -8,6 +8,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
     @admin = create(:admin)
 
     @address = @user.addresses.create(nickname: 'Nickname 1', address: 'Address 1', city: 'City 1', state: 'State 1', zip: 'Zip 1')
+    @new_address = @user.addresses.create(nickname: 'Nickname 2', address: 'Address 2', city: 'City 2', state: 'State 2', zip: 'Zip 2')
 
     @merchant_1 = create(:merchant)
     @merchant_2 = create(:merchant)
@@ -75,6 +76,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
         expect(page).to have_content("Created: #{@order.created_at}")
         expect(page).to have_content("Last Update: #{@order.updated_at}")
         expect(page).to have_content("Status: #{@order.status}")
+        expect(page).to have_content("Shipping Address: #{@order.address.nickname} - #{@order.address.address}, #{@order.address.city}, #{@order.address.state} #{@order.address.zip}")
 
         within "#oitem-#{@oi_1.id}" do
           expect(page).to have_content(@oi_1.item.name)
@@ -104,6 +106,45 @@ RSpec.describe 'Profile Orders page', type: :feature do
 
         expect(page).to have_button("Cancel Order")
         expect(page).to have_button("Change Shipping Address")
+      end
+    end
+
+    describe "clicking 'Change Shipping Address'" do
+      before :each do
+        yesterday = 1.day.ago
+        @order = create(:order, user: @user, created_at: yesterday)
+        @oi_1 = create(:order_item, order: @order, item: @item_1, price: 1, quantity: 3, created_at: yesterday, updated_at: yesterday)
+        @oi_2 = create(:fulfilled_order_item, order: @order, item: @item_2, price: 2, quantity: 5, created_at: yesterday, updated_at: 2.hours.ago)
+
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
+        visit profile_order_path(@order)
+      end
+
+      it 'shows an address change page' do
+        click_button "Change Shipping Address"
+
+        expect(current_path).to eq(order_address_path(@order))
+      end
+
+      it "allows me to change an order address" do
+        click_button "Change Shipping Address"
+
+        within "#address-#{@new_address.id}" do
+          click_button "Use Address"
+        end
+
+        @order.reload
+
+        expect(current_path).to eq(profile_order_path(@order))
+
+        expect(page).to have_content("Shipping address updated!")
+
+        expect(page).to have_content("Order ID #{@order.id}")
+        expect(page).to have_content("Created: #{@order.created_at}")
+        expect(page).to have_content("Last Update: #{@order.updated_at}")
+        expect(page).to have_content("Status: #{@order.status}")
+        expect(page).to have_content("Shipping Address: #{@new_address.nickname} - #{@new_address.address}, #{@new_address.city}, #{@new_address.state} #{@new_address.zip}")
       end
     end
   end
