@@ -1,5 +1,6 @@
 class Profile::AddressesController < ApplicationController
   before_action :require_reguser
+  before_action :save_previous_uri, only: :new
 
   def index
     user = current_user
@@ -16,7 +17,12 @@ class Profile::AddressesController < ApplicationController
 
     if @address.save
       flash[:success] = "Address added!"
-      redirect_to profile_addresses_path
+      if session[:previous_uri] == cart_path
+        session[:previous_uri] = nil
+        redirect_to cart_path
+      else
+        redirect_to profile_addresses_path
+      end
     else
       flash.now[:danger] = @address.errors.full_messages
       render :new
@@ -54,5 +60,9 @@ class Profile::AddressesController < ApplicationController
 
   def address_params
     params.require(:address).permit(:address, :city, :state, :zip, :nickname)
+  end
+
+  def save_previous_uri
+    session[:previous_uri] = URI(request.referer || '').path
   end
 end
