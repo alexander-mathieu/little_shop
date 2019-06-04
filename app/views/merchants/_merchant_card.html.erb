@@ -7,7 +7,7 @@
         <%= merchant.name %>
       <% end %>
     <% end %>
-    <p><%= merchant.home_address %>, <%= merchant.home_address %></p>
+    <p><%= merchant.home_address.city %>, <%= merchant.home_address.state %></p>
     <p>Registered Date: <%= merchant.created_at %><br/>
 
     <% if current_admin? %>

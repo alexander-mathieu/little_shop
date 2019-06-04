@@ -8,17 +8,17 @@ RSpec.describe "merchant index workflow", type: :feature do
         @merchant_2 = create(:merchant)
         @inactive_merchant = create(:inactive_merchant)
 
-        @address_1 = @merchant_1.addresses.create(zip: "Zip 1", address: "Address 1", state: "State 1", city: "City 1")
-        @address_2 = @merchant_2.addresses.create(zip: "Zip 2", address: "Address 2", state: "State 2", city: "City 2")
-        @address_3 = @inactive_merchant.addresses.create(zip: "Zip 3", address: "Address 3", state: "State 3", city: "City 3")
+        @address_1 = @merchant_1.addresses.create!(zip: "Zip 1", address: "Address 1", state: "State 1", city: "City 1")
+        @address_2 = @merchant_2.addresses.create!(zip: "Zip 2", address: "Address 2", state: "State 2", city: "City 2")
+        @address_3 = @inactive_merchant.addresses.create!(zip: "Zip 3", address: "Address 3", state: "State 3", city: "City 3")
       end
 
-      xscenario 'as a visitor' do
+      scenario 'as a visitor' do
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(nil)
         @am_admin = false
       end
 
-      xscenario 'as an admin' do
+      scenario 'as an admin' do
         admin = create(:admin)
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
         @am_admin = true
@@ -60,7 +60,10 @@ RSpec.describe "merchant index workflow", type: :feature do
       before :each do
         @merchant_1 = create(:merchant)
         @admin = create(:admin)
+
+        @address = @merchant_1.addresses.create!(zip: "Zip 1", address: "Address 1", state: "State 1", city: "City 1")
       end
+
       it 'allows an admin to disable a merchant' do
         login_as(@admin)
 
@@ -69,15 +72,21 @@ RSpec.describe "merchant index workflow", type: :feature do
         within("#merchant-#{@merchant_1.id}") do
           click_button('Disable Merchant')
         end
+
         expect(current_path).to eq(merchants_path)
 
         visit logout_path
+
         login_as(@merchant_1)
+
         expect(current_path).to eq(login_path)
+
         expect(page).to have_content('Your account is inactive, contact an admin for help')
 
         visit logout_path
+
         login_as(@admin)
+
         visit merchants_path
 
         within("#merchant-#{@merchant_1.id}") do
@@ -85,11 +94,15 @@ RSpec.describe "merchant index workflow", type: :feature do
         end
 
         visit logout_path
+
         login_as(@merchant_1)
+
         expect(current_path).to eq(dashboard_path)
 
         visit logout_path
+
         login_as(@admin)
+
         visit merchants_path
 
         within("#merchant-#{@merchant_1.id}") do
@@ -100,12 +113,12 @@ RSpec.describe "merchant index workflow", type: :feature do
 
     describe "shows merchant statistics" do
       before :each do
-        u1 = create(:user, state: "CO", city: "Fairfield")
-        u3 = create(:user, state: "IA", city: "Fairfield")
-        u2 = create(:user, state: "OK", city: "OKC")
-        u4 = create(:user, state: "IA", city: "Des Moines")
-        u5 = create(:user, state: "IA", city: "Des Moines")
-        u6 = create(:user, state: "IA", city: "Des Moines")
+        u1 = create(:user)
+        u3 = create(:user)
+        u2 = create(:user)
+        u4 = create(:user)
+        u5 = create(:user)
+        u6 = create(:user)
 
         @a1 = u1.addresses.create(zip: "Zip 1", address: "Address 1", state: "CO", city: "Fairfield")
         @a2 = u2.addresses.create(zip: "Zip 2", address: "Address 2", state: "IA", city: "Fairfield")
@@ -130,21 +143,21 @@ RSpec.describe "merchant index workflow", type: :feature do
         @am6 = @m6.addresses.create(zip: "Zip 6", address: "Address 6", state: "IA", city: "Des Moines")
         @am7 = @m7.addresses.create(zip: "Zip 7", address: "Address 7", state: "IA", city: "Des Moines")
 
-        i1 = create(:item, merchant_id: @m1.id)
-        i2 = create(:item, merchant_id: @m2.id)
-        i3 = create(:item, merchant_id: @m3.id)
-        i4 = create(:item, merchant_id: @m4.id)
-        i5 = create(:item, merchant_id: @m5.id)
-        i6 = create(:item, merchant_id: @m6.id)
-        i7 = create(:item, merchant_id: @m7.id)
+        i1 = @m1.items.create!(name: "Item Name 1", description: "Description 1", image: "https://picsum.photos/200/300?image=1", price: 3, inventory: 4)
+        i2 = @m2.items.create!(name: "Item Name 2", description: "Description 2", image: "https://picsum.photos/200/300?image=2", price: 4.5, inventory: 6)
+        i3 = @m3.items.create!(name: "Item Name 3", description: "Description 3", image: "https://picsum.photos/200/300?image=3", price: 6, inventory: 8)
+        i4 = @m4.items.create!(name: "Item Name 4", description: "Description 4", image: "https://picsum.photos/200/300?image=4", price: 7.50, inventory: 10)
+        i5 = @m5.items.create!(name: "Item Name 5", description: "Description 5", image: "https://picsum.photos/200/300?image=5", price: 9, inventory: 12)
+        i6 = @m6.items.create!(name: "Item Name 6", description: "Description 6", image: "https://picsum.photos/200/300?image=6", price: 10.50, inventory: 14)
+        i7 = @m7.items.create!(name: "Item Name 7", description: "Description 7", image: "https://picsum.photos/200/300?image=7", price: 12, inventory: 16)
 
-        @o1 = create(:shipped_order, user: u1)
-        @o2 = create(:shipped_order, user: u2)
-        @o3 = create(:shipped_order, user: u3)
-        @o4 = create(:shipped_order, user: u1)
-        @o5 = create(:cancelled_order, user: u5)
-        @o6 = create(:shipped_order, user: u6)
-        @o7 = create(:shipped_order, user: u6)
+        @o1 = create(:shipped_order, user: u1, address: @a1)
+        @o2 = create(:shipped_order, user: u2, address: @a2)
+        @o3 = create(:shipped_order, user: u3, address: @a3)
+        @o4 = create(:shipped_order, user: u1, address: @a1)
+        @o5 = create(:cancelled_order, user: u5, address: @a5)
+        @o6 = create(:shipped_order, user: u6, address: @a6)
+        @o7 = create(:shipped_order, user: u6, address: @a6)
 
         oi1 = create(:fulfilled_order_item, item: i1, order: @o1, created_at: 5.minutes.ago)
         oi2 = create(:fulfilled_order_item, item: i2, order: @o2, created_at: 53.5.hours.ago)
