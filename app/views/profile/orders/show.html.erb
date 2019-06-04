@@ -5,9 +5,11 @@
   <p>Status: <%= @order.status %></p>
   <p>Item Count: <%= @order.total_item_count %></p>
   <p>Total Cost: <%= number_to_currency(@order.total_cost) %></p>
+  <p>Shipping Address: <%= @order.address.nickname %> - <%= @order.address.address %>, <%= @order.address.city %>, <%= @order.address.state %> <%= @order.address.zip %></p>
 
   <% if @order.status == 'pending' || @order.status == 'packaged' %>
   <p><%= button_to 'Cancel Order', profile_order_path(@order), method: :delete %></p>
+  <p><%= button_to 'Change Shipping Address' %>  </p>
   <% end %>
 
   <% @order.order_items.each do |oitem| %>
