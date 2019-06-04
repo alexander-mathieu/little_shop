@@ -21,6 +21,10 @@ class User < ApplicationRecord
     addresses.find_by(nickname: "home")
   end
 
+  def address_count
+    addresses.count
+  end
+
   def active_items
     items.where(active: true).order(:name)
   end
