@@ -20,7 +20,6 @@ RSpec.describe 'user profile', type: :feature do
 
         within '#address-details' do
           expect(page).to have_content("Addresses: #{@user.home_address.address} #{@user.home_address.city}, #{@user.home_address.state} #{@user.home_address.zip}")
-          expect(page).to have_content("#{@user.city}, #{@user.state} #{@user.zip}")
 
           expect(page).to have_link("Edit Addresses")
         end
