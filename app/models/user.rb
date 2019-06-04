@@ -30,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def insufficient_items
-    items.joins(order_items: :order)
+    items.joins(:orders)
          .where(orders: {status: :pending})
          .having('items.inventory < SUM(order_items.quantity)')
          .order(:name)
