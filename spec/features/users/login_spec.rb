@@ -6,6 +6,8 @@ RSpec.describe "the login page" do
     @merchant = create(:merchant)
     @admin = create(:admin)
 
+    @address = @merchant.addresses.create!(address: "Merchant Address", city: "Merchant City", state: "Merchant State", zip: "Merchant Zip")
+
     visit login_path
   end
 
