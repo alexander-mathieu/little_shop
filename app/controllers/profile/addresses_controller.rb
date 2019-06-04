@@ -24,11 +24,21 @@ class Profile::AddressesController < ApplicationController
   end
 
   def edit
-
+    @address = Address.find(params[:id])
   end
 
   def update
+    @address = Address.find(params[:id])
 
+    if @address.update(address_params)
+      current_user.reload
+
+      flash[:success] = "Address updated."
+      redirect_to profile_addresses_path
+    else
+      flash.now[:danger] = @address.errors.full_messages
+      render :edit
+    end
   end
 
   def destroy
