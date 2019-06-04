@@ -37,6 +37,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
       scenario 'when logged in as user' do
         @user.reload
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
         visit profile_orders_path
       end
 
@@ -65,6 +66,7 @@ RSpec.describe 'Profile Orders page', type: :feature do
       scenario 'when logged in as user' do
         @user.reload
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
         visit profile_order_path(@order)
       end
 
@@ -99,6 +101,9 @@ RSpec.describe 'Profile Orders page', type: :feature do
 
         expect(page).to have_content("Item Count: #{@order.total_item_count}")
         expect(page).to have_content("Total Cost: #{number_to_currency(@order.total_cost)}")
+
+        expect(page).to have_button("Cancel Order")
+        expect(page).to have_button("Change Shipping Address")
       end
     end
   end
