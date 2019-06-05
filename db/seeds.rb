@@ -50,13 +50,13 @@ Random.new_seed
 rng = Random.new
 
 order_1 = create(:shipped_order, user: user_1, address: a1)
-create(:fulfilled_order_item, order: order_1, item: item_1, price: 1, quantity: 1, created_at: (rng.rand(3)+1).days.ago, updated_at: rng.rand(59).minutes.ago)
+create(:fulfilled_order_item, order: order_1, item: item_1, price: 1, quantity: 6, created_at: (rng.rand(3)+1).days.ago, updated_at: rng.rand(59).minutes.ago)
 create(:fulfilled_order_item, order: order_1, item: item_2, price: 2, quantity: 1, created_at: (rng.rand(23)+1).hour.ago, updated_at: rng.rand(59).minutes.ago)
 create(:fulfilled_order_item, order: order_1, item: item_3, price: 3, quantity: 1, created_at: (rng.rand(5)+1).days.ago, updated_at: rng.rand(59).minutes.ago)
 create(:fulfilled_order_item, order: order_1, item: item_4, price: 4, quantity: 1, created_at: (rng.rand(23)+1).hour.ago, updated_at: rng.rand(59).minutes.ago)
 
 order_2 = create(:shipped_order, user: user_2, address: a2)
-create(:fulfilled_order_item, order: order_2, item: item_1, price: 1, quantity: 1, created_at: (rng.rand(3)+1).days.ago, updated_at: rng.rand(59).minutes.ago)
+create(:fulfilled_order_item, order: order_2, item: item_1, price: 1, quantity: 8, created_at: (rng.rand(3)+1).days.ago, updated_at: rng.rand(59).minutes.ago)
 create(:fulfilled_order_item, order: order_2, item: item_2, price: 2, quantity: 1, created_at: (rng.rand(23)+1).hour.ago, updated_at: rng.rand(59).minutes.ago)
 create(:fulfilled_order_item, order: order_2, item: item_3, price: 3, quantity: 1, created_at: (rng.rand(5)+1).days.ago, updated_at: rng.rand(59).minutes.ago)
 create(:fulfilled_order_item, order: order_2, item: item_4, price: 4, quantity: 1, created_at: (rng.rand(23)+1).hour.ago, updated_at: rng.rand(59).minutes.ago)
@@ -74,7 +74,7 @@ create(:fulfilled_order_item, order: order_4, item: item_3, price: 3, quantity: 
 create(:fulfilled_order_item, order: order_4, item: item_4, price: 4, quantity: 1, created_at: (rng.rand(23)+1).hour.ago, updated_at: rng.rand(59).minutes.ago)
 
 order_5 = create(:order, user: user_1, address: a1)
-create(:order_item, order: order_5, item: item_1, price: 1, quantity: 1)
+create(:order_item, order: order_5, item: item_1, price: 1, quantity: 10)
 create(:fulfilled_order_item, order: order_5, item: item_2, price: 2, quantity: 1, created_at: (rng.rand(23)+1).days.ago, updated_at: rng.rand(23).hours.ago)
 
 order_6 = create(:cancelled_order, user: user_2, address: a2)
