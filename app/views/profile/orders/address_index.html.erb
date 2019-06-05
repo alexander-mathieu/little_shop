@@ -2,15 +2,21 @@
 
 <section class="all-addresses">
   <% @user.addresses.each do |address| %>
-  <% if address.id != @order.address.id %>
-  <div id="address-<%= address.id %>">
-    <p><%= address.address %></p>
-    <p>
-      <%= address.city %>,
-      <%= address.state %>
-      <%= address.zip %>
-    </p>
-      <%= button_to "Use Address", order_address_change_path(order_id: @order, address_id: address.id), method: :patch %>
+      <% if address.id != @order.address.id %>
+        <div id="address-<%= address.id %>">
+          <%= tag.div class: "card float-left m-3 address-card" do %>
+            <%= tag.section class: "card-body" do %>
+              <%= tag.h5 class: "card-title" do %>
+                <p><%= address.address %></p>
+              <% end %>
+              <p>
+                <%= address.city %>,
+                <%= address.state %>
+                <%= address.zip %>
+              </p>
+              <%= button_to "Use Address", order_address_change_path(order_id: @order, address_id: address.id), method: :patch %>
+            <% end %>
+          <% end %>
     <% end %>
   </div>
   <% end %>

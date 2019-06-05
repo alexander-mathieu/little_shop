@@ -9,12 +9,18 @@
     <h3>Addresses:</h3>
     <% if @user.addresses.any? %>
       <% @user.addresses.each do |address| %>
-        <p><%= address.address %></p>
-        <p>
-          <%= address.city %>,
-          <%= address.state %>
-          <%= address.zip %>
-        </p>
+        <%= tag.div class: "card float-left m-3 address-card" do %>
+          <%= tag.section class: "card-body" do %>
+            <%= tag.h5 class: "card-title" do %>
+              <p><%= address.address %></p>
+            <% end %>
+              <p>
+                <%= address.city %>,
+                <%= address.state %>
+                <%= address.zip %>
+              </p>
+          <% end %>
+        <% end %>
       <% end %>
       <p><%= link_to 'Edit Addresses', profile_addresses_path unless current_admin? %></p>
     <% else %>

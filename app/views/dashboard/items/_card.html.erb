@@ -1,0 +1,37 @@
+<%= tag.div class: "card float-left m-3 item-card #{style_class}" do %>
+  <%= tag.a href: item_path(item) do %>
+    <%= image_tag item.image,
+      alt: "image for #{item.name}",
+      class: "card-img-top",
+      id:"item-#{item.id}-image" %>
+  <% end %>
+
+  <%= tag.section class: "card-body" do %>
+    <%= tag.h5 class: "card-title" do %>
+      <%= link_to item.name, item_path(item) %>
+    <% end %>
+
+    <p>Price: <%= number_to_currency(item.price) %></p>
+    <p>Description:<br/>
+      <em><%= item.description %></em>
+    </p>
+
+    <p>
+      <strong>Sold by:</strong> <%= item.user.name %><br/>
+
+      <% if item.inventory > 0 %>
+        <strong>In stock:</strong> <%= item.inventory %>
+      <% else %>
+        <strong>Out of Stock</strong>
+      <% end %><br/>
+
+      <% if item.average_fulfillment_time %>
+        <strong>Average Fulfillment Time: <%= distance_of_time_in_words(item.average_fulfillment_time) %></strong>
+      <% end %>
+
+      <% unless current_admin? || current_merchant? %>
+        <div class="btn btn-light"><%= button_to "Add to Cart",  cart_item_path(item.id)%></div>
+      <% end %>
+    </p>
+  <% end %>
+<% end %>
