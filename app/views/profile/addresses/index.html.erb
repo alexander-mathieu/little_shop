@@ -5,21 +5,27 @@
 <% else %>
   <section class="all-addresses">
     <% @addresses.each do |address| %>
-    <div id="address-<%= address.id %>">
-      <h6><%= address.nickname %></h6>
-      <p><%= address.address %></p>
-      <p>
-        <%= address.city %>,
-        <%= address.state %>
-        <%= address.zip %>
-      </p>
-      <% if address.not_ordered? %>
-        <%= link_to "Edit", edit_profile_address_path(address) %>
-        <%= link_to "Delete", "/profile/addresses/#{address.id}", method: :delete, data: {confirm: "Deleting this address will destroy any pending orders associated with it.  Are you sure?"} %>
-      <% end %>
-    </div>
+      <div id="address-<%= address.id %>">
+        <%= tag.div class: "card float-left m-3 address-card" do %>
+          <%= tag.section class: "card-body" do %>
+            <%= tag.h5 class: "card-title" do %>
+              <%= address.nickname %>
+              <% end %>
+              <p><%= address.address %></p>
+              <p>
+              <%= address.city %>,
+              <%= address.state %>
+              <%= address.zip %>
+              </p>
+            <% if address.not_ordered? %>
+              <%= link_to "Edit", edit_profile_address_path(address) %>
+              <%= link_to "Delete", "/profile/addresses/#{address.id}", method: :delete, data: {confirm: "Deleting this address will destroy any pending orders associated with it.  Are you sure?"} %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </section>
 <% end %>
 
-<%= link_to 'Add an Address', new_profile_address_path %>
+<p><%= link_to 'Add an Address', new_profile_address_path %><p>
