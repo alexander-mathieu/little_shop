@@ -2,7 +2,7 @@
 
 _Little Shop_ is an extension project, building off a fictitious e-commerce site built by [Turing School of Software & Design](https://turing.io/). The project implements a new merchant dashboard feature, as well as migrating addresses from the user table in the database to their own separate address table.
 
-The deployes site can be viewed [here](https://little-shop-final.herokuapp.com/).
+The deployed site can be viewed [here](https://little-shop-final.herokuapp.com/).
 
 Go ahead and make a user account, and see what you can do!
 
@@ -28,7 +28,8 @@ rails db:{create,migrate,seed}
 ## Exploration
  * From the `little_shop` project directory, boot up a server with `rails s`
  * Open your browser, and visit `localhost:3000/`
- * Create a login if you'd like, and explore the site
+ * Create a user account if you'd like, and explore the site
 
-## Testing
-The full test suite can be run with `bundle exec rspec`
+## Additional Information
+ * The full project specs can be viewed [here])https://github.com/turingschool-projects/little_shop_v2/blob/master/solo-project-extensions.md).
+ * The test suite can be run with `bundle exec rspec`.
