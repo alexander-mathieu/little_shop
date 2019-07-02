@@ -31,6 +31,6 @@ rails db:{create,migrate,seed}
  * Create a user account if you'd like, and explore the site
 
 ## Additional Information
- * The full project specs can be viewed [here](https://github.com/turingschool-projects/little_shop_v2/blob/master/solo-project-extensions.md).
- * The test suite can be run with `bundle exec rspec`.
+ * The full project specs can be viewed [here](https://github.com/turingschool-projects/little_shop_v2/blob/master/solo-project-extensions.md)
+ * The test suite can be run with `bundle exec rspec`
  * Happy shopping!
