@@ -1,6 +1,6 @@
 # Little Shop
 
-_Little Shop_ is an extension project, building off a fictitious e-commerce site built by [Turing School of Software & Design](https://turing.io/). The project implements a new merchant dashboard feature, as well as migrating addresses from the user table to it's own separate address table.
+_Little Shop_ is an extension project, building off a fictitious e-commerce site built by [Turing School of Software & Design](https://turing.io/). The project implements a new merchant dashboard feature, as well as migrating addresses from the user table in the database to their own separate address table.
 
 The deployes site can be viewed [here](https://little-shop-final.herokuapp.com/).
 
