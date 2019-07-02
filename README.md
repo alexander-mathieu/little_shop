@@ -1,24 +1,34 @@
-# README
+# Little Shop
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+_Little Shop_ is an extension project, building off a fictitious e-commerce site built by [Turing School of Software & Design](https://turing.io/). The project implements a new merchant dashboard feature, as well as migrating addresses from the user table to it's own separate address table.
 
-Things you may want to cover:
+The deployes site can be viewed [here](https://little-shop-final.herokuapp.com/).
 
-* Ruby version
+Go ahead and make a user account, and see what you can do!
 
-* System dependencies
+## Requirements
+ * [Ruby 2.4.1](https://www.ruby-lang.org/en/downloads/) - Ruby Version
+ * [Rails 5.1.7](https://rubyonrails.org/) - Rails Version
 
-* Configuration
+## Installation
+```
+git clone https://github.com/alexander-mathieu/little_shop.git
+cd little_shop
+bundle install
+```
 
-* Database creation
+## Database Setup
+```
+rails db:{create,migrate,seed}
+```
 
-* Database initialization
+## Schema
+![Imgur](https://i.imgur.com/kEcAZdw.png)
 
-* How to run the test suite
+## Exploration
+ * From the `little_shop` project directory, boot up a server with `rails s`
+ * Open your browser, and visit `localhost:3000/`
+ * Create a login if you'd like, and explore the site
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Testing
+The full test suite can be run with `bundle exec rspec`
