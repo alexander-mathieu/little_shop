@@ -24,7 +24,7 @@ Go ahead and make a user account, and see what you can do!
 
 ```
 git clone https://github.com/alexander-mathieu/little_shop.git
-cd little_shop_v2
+cd little_shop
 bundle install
 ```
 
